@@ -1,8 +1,8 @@
 
 # 🧱 Minimal Python Blockchain
 
-This is a simple blockchain built in Python to help you learn how blockchains work.  
-It shows how to use math to lock data safely, how mining works, and how to catch cheating.
+A minimal blockchain implementation written in Python to demonstrate how blockchains work at a fundamental level.
+It shows how cryptography, mining, and validation combine to create a tamper-resistant ledger—using only standard Python tools.
 
 
 ---
@@ -101,8 +101,18 @@ Mining is performed inside the `calculate_hash()` method:
 4. Repeat until a valid hash is found
 
 ```python
-while not hash_string.startswith("0000"):
-    self.nonce += 1
+while True:
+    #Making a string for hashing
+    block_hash_string = f"{self.index}{self.nonce}{self.timestamp}{self.data}{self.previous_hash}"
+
+    #Converting the hash string into a bytes object
+    encoded_block_bytes = block_hash_string.encode()
+
+    hash_string = hashlib.sha256(encoded_block_bytes).hexdigest()
+
+    if hash_string.startswith("0000"):
+        return hash_string
+    self.nonce +=1
 ```
 
 This takes a lot of computer power on purpose—it's meant to be hard.
@@ -171,6 +181,42 @@ Now the chain is broken. To cheat, they'd have to redo all future blocks too—t
 
 ---
 
+
+## 🧬 Initialising a Blockchain
+
+This is done when an object of BlockChain class is created by calling the `__init__()` function automatically.
+
+```python
+class BlockChain:
+    def __init__(self):
+        self.chain = []
+        self.current_data = []
+        self.construct_genesis()
+```
+
+It initialises the chain list which is essentially the block chain storing all the blocks, the current data list which stores the data required for a particular block creation. It also calls a method `construct_genesis()` for creating a genesis block to start the blockchain.
+
+
+
+
+
+---
+
+
+## ➕ Add Block
+
+The method to create and append a new Block, in the Block Chain:
+
+```python
+add_block(self,previous_hash,data)
+```
+
+It takes inputs as previous hash and data for the block to be created, calculates the hash using SHA-256 algorithm and does proof of work by using `calculate_hash()` method. Finally it initializes current_data to empty list and appends the new block to the chain list.
+
+
+
+---
+
 ## 🌱 Genesis Block
 
 The blockchain begins with a Genesis Block, created automatically:
@@ -182,7 +228,7 @@ self.add_block(prev_hash="0000", data=self.current_data)
 The Genesis Block acts as the root of trust for the entire blockchain.
 
 
-
+---
 
 ## ✅ What You've Learned
 
