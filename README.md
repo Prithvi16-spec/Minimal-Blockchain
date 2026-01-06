@@ -230,7 +230,7 @@ The Genesis Block acts as the root of trust for the entire blockchain.
 
 ---
 
-## ✅ What You've Learned
+## ✅ What I have Learned
 
 * How to lock data safely with math (SHA-256)
 * How mining works with guess-and-check
